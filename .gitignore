@@ -8,7 +8,6 @@ lerna-debug.log*
 
 # Production builds
 build/
-dist/
 out/
 
 # Runtime data
