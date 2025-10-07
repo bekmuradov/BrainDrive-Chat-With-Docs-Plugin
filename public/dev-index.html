@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="BrainDrive Plugin Development Mode" />
+    <title>Plugin Development - Chat Collections</title>
+    <style>
+        /* Development-specific styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+                'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+                sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f5f5f5;
+        }
+        
+        .dev-banner {
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
+            color: white;
+            padding: 8px 20px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .dev-info {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            z-index: 1000;
+        }
+        
+        /* Hot reload indicator */
+        .hot-reload-indicator {
+            position: fixed;
+            top: 50px;
+            right: 20px;
+            background: #00d4aa;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+            z-index: 1000;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        
+        /* Loading animation for development */
+        .dev-loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #4ecdc4, transparent);
+            z-index: 999;
+            animation: loading 1s ease-in-out infinite;
+        }
+        
+        @keyframes loading {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+    </style>
+</head>
+<body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    
+    <!-- Development Banner -->
+    <div class="dev-banner">
+        🚧 DEVELOPMENT MODE - Plugin Testing Environment
+    </div>
+    
+    <!-- Hot Reload Indicator -->
+    <div class="hot-reload-indicator">
+        🔥 Hot Reload Active
+    </div>
+    
+    <!-- Main App Container -->
+    <div id="root"></div>
+    
+    <!-- Development Info -->
+    <div class="dev-info">
+        <div>🔧 Dev Mode | Port: 3034</div>
+        <div>📦 Module Federation: Disabled</div>
+        <div>🎨 Mock Services: Active</div>
+        <div>⚡ Hot Reload: Enabled</div>
+    </div>
+    
+    <script>
+        // Development helpers
+        window.devMode = true;
+        
+        // Development console helpers
+        window.getPluginInfo = function() {
+            if (window.pluginInstance) {
+                return window.pluginInstance.getPluginInfo();
+            }
+            return 'Plugin not yet initialized';
+        };
+        
+        console.log('%c🎯 Plugin Development Mode Active', 'color: #4ecdc4; font-size: 16px; font-weight: bold;');
+        console.log('%cUse window.getPluginInfo() to inspect plugin state', 'color: #666; font-size: 12px;');
+    </script>
+</body>
+</html>

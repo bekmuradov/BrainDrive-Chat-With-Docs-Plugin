@@ -1,0 +1,55 @@
+{
+  "name": "braindrive-chat",
+  "version": "1.0.20",
+  "description": "Comprehensive AI chat interface with model selection and conversation history",
+  "main": "dist/remoteEntry.js",
+  "scripts": {
+    "build": "webpack --mode production",
+    "dev": "webpack --mode development --watch",
+    "start": "webpack serve --mode development",
+    "clean": "rm -rf dist",
+    "dev:standalone": "webpack serve --config webpack.dev.js",
+    "pack:zip": "npm run build && cd dist && zip -r ../artifact.zip .",
+    "pack:tar": "npm run build && cd dist && tar -czf ../artifact.tar.gz ."
+  },
+  "keywords": [
+    "ai",
+    "chat",
+    "conversation",
+    "assistant",
+    "model-selection",
+    "history",
+    "braindrive"
+  ],
+  "author": "BrainDrive",
+  "license": "MIT",
+  "devDependencies": {
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/github": "^11.0.3",
+    "@semantic-release/release-notes-generator": "^14.0.3",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "css-loader": "^6.8.1",
+    "html-webpack-plugin": "^5.5.3",
+    "style-loader": "^3.3.3",
+    "ts-loader": "^9.4.4",
+    "typescript": "^5.1.6",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
+  },
+  "dependencies": {
+    "@microsoft/fetch-event-source": "^2.0.1",
+    "@types/react-syntax-highlighter": "^15.5.13",
+    "axios": "^1.12.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-markdown": "^10.1.0",
+    "react-syntax-highlighter": "^15.6.6",
+    "remark-gfm": "^4.0.1"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}
