@@ -1,8 +1,8 @@
 import React from 'react';
-import BrainDriveChat from './BrainDriveChatWithDocs';
+import BrainDriveChatWithDocs from './BrainDriveChatWithDocs';
 
 // Export the main component
-export default BrainDriveChat;
+export default BrainDriveChatWithDocs;
 
 // Version information
 export const version = '1.0.0';
