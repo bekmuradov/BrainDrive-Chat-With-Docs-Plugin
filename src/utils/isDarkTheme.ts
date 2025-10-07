@@ -1,4 +1,4 @@
-import { getCssVariable } from "./get_css_variable";
+import { getCssVariable } from "./getCssVariable";
 
 /**
  * Check if the current theme is dark
