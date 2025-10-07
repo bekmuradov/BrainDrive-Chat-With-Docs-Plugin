@@ -10,7 +10,8 @@
     "clean": "rm -rf dist",
     "dev:standalone": "webpack serve --config webpack.dev.js",
     "pack:zip": "npm run build && cd dist && zip -r ../artifact.zip .",
-    "pack:tar": "npm run build && cd dist && tar -czf ../artifact.tar.gz ."
+    "pack:tar": "npm run build && cd dist && tar -czf ../artifact.tar.gz .",
+    "test-dom": "ts-node --transpile-only --require ./tests/test_dom_setup.js ./tests/test_component.js"
   },
   "keywords": [
     "ai",
@@ -27,29 +28,58 @@
     "@semantic-release/commit-analyzer": "^13.0.1",
     "@semantic-release/github": "^11.0.3",
     "@semantic-release/release-notes-generator": "^14.0.3",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.0.15",
+    "@types/node-fetch": "^2.6.12",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
+    "concurrently": "^9.2.0",
     "css-loader": "^6.8.1",
     "html-webpack-plugin": "^5.5.3",
+    "jest": "^30.0.4",
+    "jest-environment-jsdom": "^30.0.4",
+    "jsdom": "^26.1.0",
+    "semantic-release": "^24.2.7",
     "style-loader": "^3.3.3",
+    "ts-jest": "^29.4.0",
     "ts-loader": "^9.4.4",
+    "ts-node": "^10.9.2",
     "typescript": "^5.1.6",
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^4.15.1"
+    "webpack-dev-server": "^5.2.2"
   },
   "dependencies": {
     "@microsoft/fetch-event-source": "^2.0.1",
     "@types/react-syntax-highlighter": "^15.5.13",
     "axios": "^1.12.2",
+    "lucide-react": "^0.525.0",
+    "node-fetch": "^3.3.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-markdown": "^10.1.0",
-    "react-syntax-highlighter": "^15.6.6",
+    "react-syntax-highlighter": "^5.8.0",
     "remark-gfm": "^4.0.1"
   },
   "peerDependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/setup-tests.ts"
+    ],
+    "moduleNameMapper": {
+      "\\.(css|less|scss|sass)$": "<rootDir>/src/__mocks__/style-mock.ts"
+    },
+    "transform": {
+      "^.+\\.(ts|tsx)$": "ts-jest"
+    },
+    "testTimeout": 10000
   }
 }
