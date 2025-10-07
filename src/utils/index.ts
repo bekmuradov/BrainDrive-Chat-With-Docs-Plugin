@@ -11,3 +11,4 @@ export * from './escapeHtml';
 export * from './getCssVariable';
 export * from './setCssVariable';
 export * from './isDarkTheme';
+export * from './formatDate';
