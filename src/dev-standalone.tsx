@@ -470,21 +470,21 @@ const DevWrapper: React.FC = () => {
 
       {/* Plugin Component */}
       <ChatCollectionsPlugin
-        title="Chat Collections Plugin - Development Mode"
-        description="Testing plugin in standalone mode"
-        pluginId="chat-collections-dev"
+        // title="Chat Collections Plugin - Development Mode"
+        // description="Testing plugin in standalone mode"
+        // pluginId="chat-collections-dev"
         moduleId="dev-module"
-        instanceId="dev-instance"
-        config={{
-          apiBaseUrl: 'http://localhost:8000',
-          refreshInterval: 30,
-          showAdvancedOptions: true,
-          maxDocuments: 100,
-          chatSettings: {
-            maxMessages: 100,
-            autoSave: true
-          }
-        }}
+        // instanceId="dev-instance"
+        // config={{
+        //   apiBaseUrl: 'http://localhost:8000',
+        //   refreshInterval: 30,
+        //   showAdvancedOptions: true,
+        //   maxDocuments: 100,
+        //   chatSettings: {
+        //     maxMessages: 100,
+        //     autoSave: true
+        //   }
+        // }}
         services={componentServices}
       />
     </div>
