@@ -185,7 +185,7 @@ class BrainDriveChatWithDocsLifecycleManager(BaseLifecycleManager):
         
         self.module_data = [
             {
-                "name": "BrainDriveChatWithDocs",
+                "name": "BrainDriveChatWithDocsModule",
                 "display_name": "AI Chat With Docs Interface",
                 "description": "Complete AI chat interface with model selection and conversation history",
                 "icon": "MessageSquare",
