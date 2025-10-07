@@ -221,7 +221,7 @@ function testComponentWithDOMValidation() {
     };
     
     // Import the component - try multiple possible paths
-    let ChatCollectionsPlugin;
+    let BrainDriveChatWithDocs;
     const possiblePaths = [
       '../src/index.tsx',
       './src/index.tsx',
@@ -231,7 +231,7 @@ function testComponentWithDOMValidation() {
     for (const path of possiblePaths) {
       try {
         const module = require(path);
-        ChatCollectionsPlugin = module.default || module;
+        BrainDriveChatWithDocs = module.default || module;
         console.log(`✓ Component imported successfully from: ${path}`);
         componentFound = true;
         break;
@@ -289,7 +289,7 @@ function testComponentWithDOMValidation() {
     };
     
     // Create React element
-    const element = React.createElement(ChatCollectionsPlugin, mockProps);
+    const element = React.createElement(BrainDriveChatWithDocs, mockProps);
     console.log('✓ React element created');
     
     // Validate React element structure
@@ -353,7 +353,7 @@ function testComponentWithDOMValidation() {
     // Test component instantiation and method calling
     console.log('\n--- Component Method Testing ---');
     try {
-      const instance = new ChatCollectionsPlugin(mockProps);
+      const instance = new BrainDriveChatWithDocs(mockProps);
       console.log('✓ Component instance created');
       
       // Test getPluginInfo method if available

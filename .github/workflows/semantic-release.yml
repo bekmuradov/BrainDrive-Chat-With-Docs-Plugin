@@ -1,40 +1,40 @@
-# name: 🔖 Semantic Release
+name: 🔖 Semantic Release
 
-# permissions:
-#   contents: write
-#   issues: write
+permissions:
+  contents: write
+  issues: write
 
-# on:
-#   push:
-#     branches:
-#       - main
+on:
+  push:
+    branches:
+      - main
 
-# jobs:
-#   release:
-#     runs-on: ubuntu-latest
-#     env:
-#       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v4
-#         with:
-#           persist-credentials: true
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
 
-#       - name: Set up Node.js
-#         uses: actions/setup-node@v4
-#         with:
-#           node-version: '20.x'
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
 
-#       - name: Install dependencies
-#         run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-#       - name: Run DOM tests
-#         run: npm run test-dom
+      # - name: Run DOM tests
+      #   run: npm run test-dom
 
-#       - name: Build & Package
-#         run: |
-#           npm run pack:zip
-#           npm run pack:tar
+      - name: Build & Package
+        run: |
+          npm run pack:zip
+          npm run pack:tar
 
-#       - name: Semantic Release
-#         run: npx semantic-release
+      - name: Semantic Release
+        run: npx semantic-release

@@ -36,6 +36,7 @@
     "@types/node-fetch": "^2.6.12",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
+    "@types/react-syntax-highlighter": "^15.5.13",
     "concurrently": "^9.2.0",
     "css-loader": "^6.8.1",
     "html-webpack-plugin": "^5.5.3",
@@ -54,14 +55,13 @@
   },
   "dependencies": {
     "@microsoft/fetch-event-source": "^2.0.1",
-    "@types/react-syntax-highlighter": "^15.5.13",
     "axios": "^1.12.2",
     "lucide-react": "^0.525.0",
     "node-fetch": "^3.3.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-markdown": "^10.1.0",
-    "react-syntax-highlighter": "^5.8.0",
+    "react-syntax-highlighter": "^15.6.6",
     "remark-gfm": "^4.0.1"
   },
   "peerDependencies": {
