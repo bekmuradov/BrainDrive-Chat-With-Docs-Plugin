@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   mode: "development",
-  entry: "./src/dev-standalone.tsx", // Different entry point for dev mode
+  entry: "./src/DevStandalone.tsx", // Different entry point for dev mode
   
   devtool: 'eval-source-map', // Better debugging
   
