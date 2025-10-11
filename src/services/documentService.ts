@@ -1,11 +1,13 @@
 /**
  * Document Processing Service
- * 
- * This service handles document uploads and text extraction for chat context.
+ * * This service handles document uploads and text extraction for chat context.
  * It provides methods to process various file types and extract text content.
  */
 
 import { ApiService } from '../types';
+
+// Helper type to handle unpredictable API response wrappers
+type ApiResponse<T> = T | { data: T };
 
 export interface DocumentProcessingResult {
   filename: string;
@@ -38,6 +40,13 @@ export class DocumentService {
     this.apiService = apiService || null;
   }
 
+  // --- Utility Method for Robust Data Extraction ---
+  private extractData<T>(response: ApiResponse<T>): T {
+      // If 'data' exists and is not null/undefined, return it.
+      // Otherwise, assume the entire response is the expected data T.
+      return (response as { data: T }).data !== undefined ? (response as { data: T }).data : (response as T);
+  }
+
   /**
    * Set API service for authenticated requests
    */
@@ -61,8 +70,10 @@ export class DocumentService {
     }
 
     try {
-      const response = await this.apiService.get('/api/v1/documents/supported-types');
-      return response.data || response;
+      // 🚀 Using ApiResponse<SupportedFileTypes> for the generic type
+      const response = await this.apiService.get<ApiResponse<SupportedFileTypes>>('/api/v1/documents/supported-types');
+      // 🚀 Using the new extractData method to safely retrieve the data
+      return this.extractData(response);
     } catch (error) {
       console.error('Error getting supported file types:', error);
       throw error;
@@ -78,20 +89,21 @@ export class DocumentService {
     }
 
     try {
-      // Create FormData for file upload
       const formData = new FormData();
       formData.append('file', file);
 
       console.log(`📄 Processing document: ${file.name} (${file.type}, ${file.size} bytes)`);
 
-      const response = await this.apiService.post('/api/v1/documents/process', formData, {
+      // 🚀 Using ApiResponse<DocumentProcessingResult> for the generic type
+      const response = await this.apiService.post<ApiResponse<DocumentProcessingResult>>('/api/v1/documents/process', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
 
       console.log(`✅ Document processed successfully: ${file.name}`);
-      return response.data || response;
+      // 🚀 Using the new extractData method
+      return this.extractData(response);
     } catch (error) {
       console.error(`❌ Error processing document ${file.name}:`, error);
       throw error;
@@ -115,7 +127,6 @@ export class DocumentService {
     }
 
     try {
-      // Create FormData for multiple file uploads
       const formData = new FormData();
       files.forEach(file => {
         formData.append('files', file);
@@ -123,13 +134,15 @@ export class DocumentService {
 
       console.log(`📄 Processing ${files.length} documents`);
 
-      const response = await this.apiService.post('/api/v1/documents/process-multiple', formData, {
+      // 🚀 Using ApiResponse<MultipleDocumentProcessingResult> for the generic type
+      const response = await this.apiService.post<ApiResponse<MultipleDocumentProcessingResult>>('/api/v1/documents/process-multiple', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
 
-      const result = response.data || response;
+      // 🚀 Using the new extractData method
+      const result = this.extractData(response);
       console.log(`✅ Documents processed: ${result.successful_files}/${result.total_files} successful`);
       return result;
     } catch (error) {
@@ -137,6 +150,8 @@ export class DocumentService {
       throw error;
     }
   }
+
+  // --- Rest of the class methods remain the same ---
 
   /**
    * Check if a file type is supported
@@ -205,13 +220,13 @@ export class DocumentService {
    */
   formatTextForChatContext(result: DocumentProcessingResult): string {
     const { filename, file_type, extracted_text, text_length } = result;
-    
+
     let context = `[DOCUMENT CONTEXT - ${filename.toUpperCase()}]\n`;
     context += `File Type: ${file_type}\n`;
     context += `Text Length: ${text_length} characters\n`;
     context += `Content:\n\n${extracted_text}\n\n`;
     context += `[END DOCUMENT CONTEXT]`;
-    
+
     return context;
   }
 
@@ -221,16 +236,16 @@ export class DocumentService {
   formatMultipleTextsForChatContext(results: DocumentProcessingResult[]): string {
     let context = `[MULTIPLE DOCUMENTS CONTEXT]\n`;
     context += `Total Documents: ${results.length}\n\n`;
-    
+
     results.forEach((result, index) => {
       context += `--- Document ${index + 1}: ${result.filename} ---\n`;
       context += `Type: ${result.file_type}\n`;
       context += `Length: ${result.text_length} characters\n`;
       context += `Content:\n${result.extracted_text}\n\n`;
     });
-    
+
     context += `[END MULTIPLE DOCUMENTS CONTEXT]`;
-    
+
     return context;
   }
 }

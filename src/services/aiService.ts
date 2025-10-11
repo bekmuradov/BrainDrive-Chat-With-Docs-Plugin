@@ -1,12 +1,42 @@
-import { ModelInfo, Services, ChatMessage, PersonaInfo } from '../types';
-import { extractTextFromData, generateId } from '../utils';
+import { ModelInfo, PersonaInfo } from '../components/chat-header/types';
+import { ApiService } from '../types';
+import { extractTextFromData } from '../utils';
+
+// Define the user object expected from /api/v1/auth/me
+export interface CurrentUserResponse {
+    id: string;
+    // Add other expected fields from the user response if needed (e.g., name, email)
+    name?: string; 
+    email?: string;
+}
+
+// Define the conversation object expected from /api/v1/conversations/{id}/with-persona
+export interface ConversationWithPersona {
+    conversation_id: string;
+    persona_id: string | null;
+    // Add other conversation-related fields
+    messages: any[]; // Use a more specific Message[] type if possible
+    // ...
+}
+
+// Define the response object from a non-streaming chat POST.
+// The successful response is the text output/conversation ID.
+// Note: For non-streaming, your current code expects `response.data` or `response`
+// to contain the response fields (like `conversation_id`).
+export interface ChatPostResponse {
+    conversation_id?: string;
+    // The actual response content fields will depend on the backend's structure, 
+    // often nested under 'data' or similar if the API wrapper is adding outer keys.
+    data?: any; 
+    // We'll rely on the dynamic type T here, but this is a minimum structure.
+}
 
 export class AIService {
-  private services: Services;
+  private apiService?: ApiService;
   private currentUserId: string | null = null;
 
-  constructor(services: Services) {
-    this.services = services;
+  constructor(apiService?: ApiService) {
+    this.apiService = apiService;
     this.initializeUserId();
   }
 
@@ -15,8 +45,8 @@ export class AIService {
    */
   private async initializeUserId() {
     try {
-      if (this.services?.api) {
-        const response = await this.services.api.get('/api/v1/auth/me');
+      if (this.apiService) {
+        const response = await this.apiService.get<CurrentUserResponse>('/api/v1/auth/me');
         if (response && response.id) {
           this.currentUserId = response.id;
         }
@@ -41,7 +71,7 @@ export class AIService {
     selectedPersona?: PersonaInfo,  // Add persona parameter
     abortController?: AbortController // Add abort controller for cancellation
   ): Promise<boolean> {
-    if (!this.services?.api) {
+    if (!this.apiService) {
       throw new Error('API service not available');
     }
 
@@ -104,10 +134,10 @@ export class AIService {
     try {
       let success = false;
 
-      if (useStreaming && typeof this.services?.api?.postStreaming === 'function') {
+      if (useStreaming && typeof this.apiService?.postStreaming === 'function') {
         // Handle streaming
         try {
-          await this.services.api.postStreaming(
+          await this.apiService.postStreaming(
             endpoint,
             requestParams,
             (chunk: string) => {
@@ -159,7 +189,7 @@ export class AIService {
       } else {
         // Handle non-streaming
         try {
-          const response = await this.services.api.post(endpoint, requestParams, { timeout: 60000 });
+          const response = await this.apiService.post<ChatPostResponse>(endpoint, requestParams, { timeout: 60000 });
           const responseData = response.data || response;
 
           // Store the conversation_id if it's in the response
@@ -198,13 +228,13 @@ export class AIService {
   /**
    * Load conversation with persona details
    */
-  async loadConversationWithPersona(conversationId: string): Promise<any> {
-    if (!this.services?.api) {
+  async loadConversationWithPersona(conversationId: string): Promise<ConversationWithPersona> {
+    if (!this.apiService) {
       throw new Error('API service not available');
     }
 
     try {
-      const response = await this.services.api.get(
+      const response = await this.apiService.get<ConversationWithPersona>(
         `/api/v1/conversations/${conversationId}/with-persona`
       );
       return response;
@@ -218,12 +248,12 @@ export class AIService {
    * Update conversation's persona
    */
   async updateConversationPersona(conversationId: string, personaId: string | null): Promise<void> {
-    if (!this.services?.api) {
+    if (!this.apiService) {
       throw new Error('API service not available');
     }
 
     try {
-      await this.services.api.put(
+      await this.apiService.put(
         `/api/v1/conversations/${conversationId}/persona`,
         { persona_id: personaId }
       );
@@ -234,12 +264,12 @@ export class AIService {
   }
 
   async cancelGeneration(conversationId: string | null): Promise<void> {
-    if (!this.services?.api || !conversationId) {
+    if (!this.apiService || !conversationId) {
       return;
     }
 
     try {
-      await this.services.api.post(
+      await this.apiService.post(
         `/api/v1/ai/providers/cancel`,
         { conversation_id: conversationId }
       );

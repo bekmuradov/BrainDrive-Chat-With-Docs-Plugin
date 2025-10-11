@@ -1,7 +1,7 @@
 import React from 'react';
 import {Plus} from 'lucide-react';
 
-import { API_BASE } from '../../config';
+import { BRAINDRIVE_CORE_API } from '../../constants';
 import { type CollectionsViewProps, type Collection, CollectionViewType } from './types';
 
 import { NoCollections } from './NoCollections';
@@ -56,7 +56,7 @@ export class CollectionsView extends React.Component<CollectionsViewProps, Colle
       const { newCollection } = this.state;
 
       // Send a POST request to create the new collection
-      const response = await fetch(`${API_BASE}/collections/`, {
+      const response = await fetch(`${BRAINDRIVE_CORE_API}/collections/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

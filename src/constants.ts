@@ -88,3 +88,19 @@ export const LOADING_MESSAGES = {
   PROCESSING_DOCUMENTS: '📄 Processing documents...',
   LOADING_CONVERSATION: '💬 Loading conversation...',
 } as const;
+
+// Service Runtimes
+export const PLUGIN_SERVICE_RUNTIMES = [
+  {
+    "name": "cwyd_service",
+    "healthcheck_url": "http://localhost:8000/health",
+  },
+  {
+    "name": "document_processing_service",
+    "healthcheck_url": "http://localhost:8080/health",
+  },
+];
+
+export const CHAT_SERVICE_API_BASE = 'http://127.0.0.1:8000';
+
+export const BRAINDRIVE_CORE_API = 'http://127.0.0.1:8005';

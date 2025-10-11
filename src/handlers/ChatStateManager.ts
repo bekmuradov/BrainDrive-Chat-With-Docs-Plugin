@@ -3,17 +3,18 @@
  * Handles state updates, validation, and persistence
  */
 
-import { BrainDriveChatState, ChatMessage, ModelInfo, PersonaInfo, ConversationWithPersona } from '../types';
-import { SETTINGS_KEYS, UI_CONFIG } from '../constants';
+import { ChatMessage, ModelInfo, PersonaInfo, ConversationWithPersona } from '../types';
+import { CollectionChatState } from '../collection-chat-view/chatViewTypes';
+import { SETTINGS_KEYS } from '../constants';
 
 export class ChatStateManager {
-  private setState: (state: Partial<BrainDriveChatState>) => void;
-  private getState: () => BrainDriveChatState;
+  private setState: (state: Partial<CollectionChatState>) => void;
+  private getState: () => CollectionChatState;
   private settingsService: any;
 
   constructor(
-    setState: (state: Partial<BrainDriveChatState>) => void,
-    getState: () => BrainDriveChatState,
+    setState: (state: Partial<CollectionChatState>) => void,
+    getState: () => CollectionChatState,
     settingsService?: any
   ) {
     this.setState = setState;

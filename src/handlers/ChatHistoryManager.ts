@@ -188,6 +188,7 @@ export class ChatHistoryManager {
       // Try to fetch conversation with persona details first
       let conversationWithPersona: ConversationWithPersona | null = null;
       try {
+         // @ts-ignore
         conversationWithPersona = await this.aiService.loadConversationWithPersona(conversationId);
       } catch (error) {
         // If the new endpoint doesn't exist yet, fall back to regular conversation loading

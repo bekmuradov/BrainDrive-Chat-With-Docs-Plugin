@@ -145,11 +145,11 @@ export interface SupportedFileTypes {
 
 // Service interfaces
 export interface ApiService {
-  get: (url: string, options?: any) => Promise<ApiResponse>;
-  post: (url: string, data: any, options?: any) => Promise<ApiResponse>;
-  put: (url: string, data: any, options?: any) => Promise<ApiResponse>;
-  delete: (url: string, options?: any) => Promise<ApiResponse>;
-  postStreaming?: (url: string, data: any, onChunk: (chunk: string) => void, options?: any) => Promise<ApiResponse>;
+  get: <T>(url: string, options?: any) => Promise<T>;
+  post: <T>(url: string, data: any, options?: any) => Promise<T>;
+  put: <T>(url: string, data: any, options?: any) => Promise<T>;
+  delete: <T>(url: string, options?: any) => Promise<T>;
+  postStreaming?: <T>(url: string, data: any, onChunk: (chunk: string) => void, options?: any) => Promise<T>;
 }
 
 export interface EventService {
@@ -170,7 +170,7 @@ export interface SettingsService {
   // get: (key: string) => any;
   // set: (key: string, value: any) => Promise<void>;
   getSetting?: (id: string) => Promise<any>;
-  setSetting?: (id: string, value: any) => Promise<any>;
+  setSetting?: (name: string, value: any, context?: { userId?: string; pageId?: string }) => Promise<void>;
   // getSettingDefinitions?: () => Promise<any>;
   getSettingDefinitions?: (filter?: { id?: string; category?: string; tags?: string[] }) => Promise<any[]>;
 }
@@ -192,71 +192,6 @@ export interface Services {
   theme?: ThemeService;
   settings?: SettingsService;
   pageContext?: PageContextService;
-}
-
-// Component props
-export interface BrainDriveChatProps {
-  moduleId?: string;
-  services: Services;
-  initialGreeting?: string;
-  defaultStreamingMode?: boolean;
-  promptQuestion?: string;
-  conversationType?: string; // Allow plugins to specify their type
-  // Persona-related props
-  availablePersonas?: PersonaInfo[];  // Developer-defined personas
-  showPersonaSelection?: boolean;     // Control visibility
-  defaultPersona?: PersonaInfo;       // Default persona to use
-}
-
-// Component state
-export interface BrainDriveChatState {
-  messages: ChatMessage[];
-  inputText: string;
-  isLoading: boolean;
-  error: string;
-  currentTheme: string;
-  selectedModel: ModelInfo | null;
-  pendingModelKey: string | null;
-  pendingModelSnapshot: ModelInfo | null;
-  useStreaming: boolean;
-  conversation_id: string | null;
-  isLoadingHistory: boolean;
-  currentUserId: string | null;
-  isInitializing: boolean;
-  conversations: ConversationInfo[];
-  selectedConversation: ConversationInfo | null;
-  isUpdating: boolean;
-  models: ModelInfo[];
-  isLoadingModels: boolean;
-  showModelSelection: boolean;
-  showConversationHistory: boolean;
-  // Persona-related state
-  personas: PersonaInfo[];
-  selectedPersona: PersonaInfo | null;
-  pendingPersonaId: string | null;
-  isLoadingPersonas: boolean;
-  showPersonaSelection: boolean;
-  // Web search state
-  useWebSearch: boolean;
-  isSearching: boolean;
-  // User control state
-  isStreaming: boolean;
-  editingMessageId: string | null;
-  editingContent: string;
-  
-  // Document processing state
-  documentContext: string;
-  isProcessingDocuments: boolean;
-  
-  // Scroll state
-  isNearBottom: boolean;
-  showScrollToBottom: boolean;
-  isAutoScrollLocked: boolean;
-  
-  // History UI state
-  showAllHistory: boolean;
-  openConversationMenu: string | null;
-  isHistoryExpanded: boolean;
 }
 
 // Provider settings

@@ -1,11 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import ChatCollectionsPlugin from './BrainDriveChatWithDocs';
-import './BrainDriveChatWithDocs.css';
+import ChatCollectionsPlugin from './braindrive-plugin/BrainDriveChatWithDocs';
+import './braindrive-plugin/BrainDriveChatWithDocs.css';
 import type { Services, TemplateTheme, SettingsService } from './types';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
-import { API_BASE } from './config';
+import { AxiosRequestConfig } from 'axios';
 
 // Hot Module Replacement (HMR) setup - this must be at the top level
 if (module.hot) {
@@ -517,7 +516,7 @@ document.head.appendChild(style);
 
 // HMR acceptance for this module
 if (module.hot) {
-  module.hot.accept('./BrainDriveChatWithDocs', () => {
+  module.hot.accept('./braindrive-plugin/BrainDriveChatWithDocs', () => {
     console.log('🔄 BrainDriveChatWithDocs updated via HMR');
   });
 }

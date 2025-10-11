@@ -8,7 +8,7 @@ module.exports = {
   entry: "./src/index",
   output: {
     path: path.resolve(__dirname, 'dist'),
-    //path: path.resolve(__dirname, '../../backend/plugins/shared/BrainDriveChatWithDocs/v1.0.19/dist'),
+    // path: path.resolve(__dirname, 'C:\\Users\\beck\\Documents\\GitHub\\brain_drive\\BrainDrive\\backend\\plugins\\shared\\BrainDriveChatWithDocs\\v1.0.2\\dist'),
     publicPath: "auto",
     clean: true,
     library: {
@@ -41,7 +41,7 @@ module.exports = {
       library: { type: "var", name: "BrainDriveChatWithDocs" },
       filename: "remoteEntry.js",
       exposes: {
-        "./BrainDriveChatWithDocs": "./src/index",
+        "./BrainDriveChatWithDocsModule": "./src/index",
       },
       shared: {
         react: {

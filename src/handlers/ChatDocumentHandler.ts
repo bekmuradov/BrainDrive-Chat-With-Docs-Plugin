@@ -5,7 +5,6 @@
 
 import { DocumentService, DocumentProcessingResult } from '../services';
 import { ChatMessage } from '../types';
-import { generateId } from '../utils';
 import { FILE_CONFIG, ERROR_MESSAGES } from '../constants';
 
 export class ChatDocumentHandler {

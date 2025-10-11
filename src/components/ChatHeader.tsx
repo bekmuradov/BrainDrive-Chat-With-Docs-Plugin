@@ -1,6 +1,6 @@
 import React from 'react';
 import { ModelInfo, ConversationInfo, PersonaInfo } from '../types';
-import { formatRelativeTime } from '../utils';
+import { formatRelativeTimeByDate } from '../utils';
 import { ComposeIcon, ThreeDotsIcon, EditIcon, DeleteIcon } from '../icons';
 import SearchableDropdown, {
   DropdownOption
@@ -153,7 +153,7 @@ class ChatHeader extends React.Component<ChatHeaderProps, ChatHeaderState> {
         label: conv.title || 'Untitled',
         description:
           conv.updated_at || conv.created_at
-            ? formatRelativeTime(conv.updated_at || conv.created_at)
+            ? formatRelativeTimeByDate(conv.updated_at || conv.created_at)
             : undefined,
         keywords: [conv.title || '', conv.id]
       }))
@@ -264,8 +264,8 @@ class ChatHeader extends React.Component<ChatHeaderProps, ChatHeaderState> {
                   >
                     <div className="conversation-menu-item datetime">
                       {selectedConversation.updated_at
-                        ? `Updated ${formatRelativeTime(selectedConversation.updated_at)}`
-                        : `Created ${formatRelativeTime(selectedConversation.created_at)}`}
+                        ? `Updated ${formatRelativeTimeByDate(selectedConversation.updated_at)}`
+                        : `Created ${formatRelativeTimeByDate(selectedConversation.created_at)}`}
                     </div>
                     <button
                       className="conversation-menu-item"

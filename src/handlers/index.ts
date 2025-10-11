@@ -4,6 +4,6 @@
 
 export { ChatStateManager } from './ChatStateManager';
 export { ChatMessageHandler } from './ChatMessageHandler';
-export { ChatSearchHandler } from './ChatSearchHandler';
+// export { ChatSearchHandler } from './ChatSearchHandler';
 export { ChatDocumentHandler } from './ChatDocumentHandler';
 export { ChatHistoryManager } from './ChatHistoryManager';
