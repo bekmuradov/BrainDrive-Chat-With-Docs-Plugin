@@ -125,6 +125,12 @@ export interface ChatCollectionsPluginProps {
   instanceId?: string;
   config?: ChatCollectionsConfig;
   services: Services;
+  initialGreeting?: string;
+  defaultStreamingMode?: boolean;
+  promptQuestion?: string;
+  conversationType?: string;
+  // Persona-related props
+  showPersonaSelection?: boolean;
 }
 
 // Plugin Service

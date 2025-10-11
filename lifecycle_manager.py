@@ -105,7 +105,7 @@ class BrainDriveChatWithDocsLifecycleManager(BaseLifecycleManager):
             "type": "frontend",
             "icon": "MessageSquare",
             "category": "ai",
-            "official": True,
+            "official": False,
             "author": "BrainDrive",
             "compatibility": "1.0.0",
             "scope": "BrainDriveChatWithDocs",
@@ -116,8 +116,8 @@ class BrainDriveChatWithDocsLifecycleManager(BaseLifecycleManager):
             "plugin_slug": "BrainDriveChatWithDocs",
             # Update tracking fields (matching plugin model)
             "source_type": "github",
-            "source_url": "https://github.com/BrainDriveAI/BrainDrive-Chat-Plugin",
-            "update_check_url": "https://github.com/BrainDriveAI/BrainDrive-Chat-Plugin/releases/latest",
+            "source_url": "https://github.com/bekmuradov/BrainDrive-Chat-With-Docs-Plugin",
+            "update_check_url": "https://github.com/bekmuradov/BrainDrive-Chat-With-Docs-Plugin/releases/latest",
             "last_update_check": None,
             "update_available": False,
             "latest_version": None,
@@ -187,7 +187,7 @@ class BrainDriveChatWithDocsLifecycleManager(BaseLifecycleManager):
             {
                 "name": "BrainDriveChatWithDocsModule",
                 "display_name": "AI Chat With Docs Interface",
-                "description": "Complete AI chat interface with model selection and conversation history",
+                "description": "Complete AI chat with docs interface with model selection and conversation history",
                 "icon": "MessageSquare",
                 "category": "ai",
                 "priority": 1,

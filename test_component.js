@@ -2,7 +2,7 @@
 const React = require('react');
 
 // Mock the component export
-const BrainDriveChat = require('./src/index.tsx').default;
+const BrainDriveChatWithDocs = require('./src/index.tsx').default;
 
 // Test function component instantiation
 function testComponentInstantiation() {
@@ -32,7 +32,7 @@ function testComponentInstantiation() {
     };
 
     // Try to create an instance
-    const instance = new BrainDriveChat(mockProps);
+    const instance = new BrainDriveChatWithDocs(mockProps);
     
     // Test if getSavedStreamingMode method exists and is callable
     if (typeof instance.getSavedStreamingMode === 'function') {
@@ -56,7 +56,7 @@ function testComponentInstantiation() {
 }
 
 // Run the test
-console.log('Testing BrainDriveChat component instantiation...');
+console.log('Testing BrainDriveChatWithDocs component instantiation...');
 const success = testComponentInstantiation();
 
 if (success) {
