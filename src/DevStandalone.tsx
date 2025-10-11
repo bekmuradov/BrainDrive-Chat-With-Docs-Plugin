@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import ChatCollectionsPlugin from './braindrive-plugin/BrainDriveChatWithDocs';
-import './braindrive-plugin/BrainDriveChatWithDocs.css';
+import ChatCollectionsPlugin from './BrainDriveChatWithDocs';
+import './BrainDriveChatWithDocs.css';
 import type { Services, TemplateTheme, SettingsService } from './types';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { AxiosRequestConfig } from 'axios';
@@ -516,7 +516,7 @@ document.head.appendChild(style);
 
 // HMR acceptance for this module
 if (module.hot) {
-  module.hot.accept('./braindrive-plugin/BrainDriveChatWithDocs', () => {
+  module.hot.accept('./BrainDriveChatWithDocs', () => {
     console.log('🔄 BrainDriveChatWithDocs updated via HMR');
   });
 }

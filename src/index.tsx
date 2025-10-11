@@ -1,5 +1,5 @@
 import React from 'react';
-import BrainDriveChatWithDocs from './braindrive-plugin/BrainDriveChatWithDocs';
+import BrainDriveChatWithDocs from './BrainDriveChatWithDocs';
 
 // Export the main component
 export default BrainDriveChatWithDocs;
