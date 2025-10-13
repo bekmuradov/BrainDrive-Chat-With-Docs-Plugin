@@ -236,7 +236,7 @@ class BrainDriveChatWithDocs extends React.Component<ChatCollectionsPluginProps,
         
         return (
             <div className={`plugin-template chat-collections-plugin ${currentTheme === 'dark' ? 'dark-theme' : ''}`}>
-                {isInitializing ? this.renderLoading() : this.renderContent()}
+                {this.renderContent()}
             </div>
         );
     }
