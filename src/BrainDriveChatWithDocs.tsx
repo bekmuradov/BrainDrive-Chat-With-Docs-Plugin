@@ -53,7 +53,7 @@ class BrainDriveChatWithDocs extends React.Component<ChatCollectionsPluginProps,
             loading: false,
             error: null,
             currentTheme: 'light',
-            isInitializing: true,
+            isInitializing: false,
             serviceStatuses: PLUGIN_SERVICE_RUNTIMES.map(service => ({
                 name: service.name,
                 status: 'checking' as const,
