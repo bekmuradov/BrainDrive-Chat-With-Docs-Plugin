@@ -3,6 +3,29 @@
  * Centralized configuration values to improve maintainability
  */
 
+export const PLUGIN_NAME = "BrainDriveChatWithDocs";
+
+export const DEFAULT_PLUGIN_SETTINGS = {
+    DEFINITION_ID: 'braindrive_chat_with_documents_settings',
+    NAME: 'Chat with Document Processor Settings',
+    PLUGIN_SLUG: 'BrainDriveChatWithDocs',
+    DEFAULT_VALUE: {
+        LLM_PROVIDER: "ollama",
+        EMBEDDING_PROVIDER: "ollama",
+        ENABLE_CONTEXTUAL_RETRIEVAL: true,
+        OLLAMA_CONTEXTUAL_LLM_BASE_URL: "http://localhost:11434",
+        OLLAMA_CONTEXTUAL_LLM_MODEL: "llama3.2:3b",
+        OLLAMA_LLM_BASE_URL: "http://localhost:11434",
+        OLLAMA_LLM_MODEL: "qwen3:8b",
+        OLLAMA_EMBEDDING_BASE_URL: "http://localhost:11434",
+        OLLAMA_EMBEDDING_MODEL: "mxbai-embed-large",
+        DOCUMENT_PROCESSOR_API_URL: "http://host.docker.internal:8080/documents/",
+        DOCUMENT_PROCESSOR_API_KEY: "default_api_key",
+        DOCUMENT_PROCESSOR_TIMEOUT: 300,
+        DOCUMENT_PROCESSOR_MAX_RETRIES: 3
+    }
+};
+
 // Settings and storage keys
 export const SETTINGS_KEYS = {
   STREAMING: 'ai_prompt_chat_streaming_enabled',
@@ -103,4 +126,4 @@ export const PLUGIN_SERVICE_RUNTIMES = [
 
 export const CHAT_SERVICE_API_BASE = 'http://127.0.0.1:8000';
 
-export const BRAINDRIVE_CORE_API = 'http://127.0.0.1:8005';
+export const BRAINDRIVE_CORE_API = 'http://localhost:8005';

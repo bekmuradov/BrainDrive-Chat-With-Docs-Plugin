@@ -1,5 +1,7 @@
 import React from 'react';
 
+import './CollectionChatViewShell.css';
+
 import {
   CollectionChatProps,
   CollectionChatState,

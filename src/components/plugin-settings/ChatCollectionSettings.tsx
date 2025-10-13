@@ -1,7 +1,7 @@
 import React from 'react';
 import { Loader2, AlertCircle, Save, XCircle, Info, EyeOff, Eye, RotateCcw, X } from 'lucide-react';
 import type { Services } from '../../types';
-import {BRAINDRIVE_CORE_API} from '../../constants';
+import { BRAINDRIVE_CORE_API, DEFAULT_PLUGIN_SETTINGS as CHAT_SETTINGS} from '../../constants';
 import { ActionButton } from './ActionButton';
 
 interface FieldDependency {
@@ -173,7 +173,7 @@ const FIELD_CONFIG: Record<keyof ChatSettingsValue, FieldConfig> = {
     description: 'URL for the Document Processor microservice',
     type: 'url',
     section: 'processor',
-    placeholder: 'http://localhost:8080/documents/',
+    placeholder: 'http://host.docker.internal:8080/documents/',
     required: true
   },
   DOCUMENT_PROCESSOR_API_KEY: {
@@ -212,26 +212,6 @@ const SECTIONS = {
     processor: { title: 'Document Processor', icon: '📄' }
 };
 
-const CHAT_SETTINGS = {
-    DEFINITION_ID: 'chat_with_document_processor_settings',
-    NAME: 'Chat with Document Processor Settings',
-    PLUGIN_SLUG: 'ChatWithYourDocuments',
-    DEFAULT_VALUE: {
-        LLM_PROVIDER: "ollama",
-        EMBEDDING_PROVIDER: "ollama",
-        ENABLE_CONTEXTUAL_RETRIEVAL: true,
-        OLLAMA_CONTEXTUAL_LLM_BASE_URL: "http://localhost:11434",
-        OLLAMA_CONTEXTUAL_LLM_MODEL: "llama3.2:3b",
-        OLLAMA_LLM_BASE_URL: "http://localhost:11434",
-        OLLAMA_LLM_MODEL: "qwen3:8b",
-        OLLAMA_EMBEDDING_BASE_URL: "http://localhost:11434",
-        OLLAMA_EMBEDDING_MODEL: "mxbai-embed-large",
-        DOCUMENT_PROCESSOR_API_URL: "http://localhost:8080/documents/",
-        DOCUMENT_PROCESSOR_API_KEY: "default_api_key",
-        DOCUMENT_PROCESSOR_TIMEOUT: 300,
-        DOCUMENT_PROCESSOR_MAX_RETRIES: 3
-    }
-};
 
 export class ChatCollectionsSettings extends React.Component<ChatCollectionsSettingsProps, ChatCollectionsSettingsState> {
     private settingsUnsubscribe?: () => void;

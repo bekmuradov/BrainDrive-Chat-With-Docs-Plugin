@@ -924,7 +924,7 @@ class BrainDriveChatWithDocsLifecycleManager(BaseLifecycleManager):
                 "OLLAMA_LLM_MODEL": 'qwen3:8b',
                 "OLLAMA_EMBEDDING_BASE_URL": 'http://localhost:11434',
                 "OLLAMA_EMBEDDING_MODEL": 'mxbai-embed-large',
-                "DOCUMENT_PROCESSOR_API_URL": 'http://localhost:8080/documents/',
+                "DOCUMENT_PROCESSOR_API_URL": 'http://host.docker.internal:8080/documents/',
                 "DOCUMENT_PROCESSOR_API_KEY": 'default_api_key',
                 "DOCUMENT_PROCESSOR_TIMEOUT": 600,
                 "DOCUMENT_PROCESSOR_MAX_RETRIES": 3,

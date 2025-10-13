@@ -14,6 +14,7 @@ import {
 	ServiceStatusIndicator,
 	ServiceWarningBanner,
 	ContentOverlay,
+    ChatCollectionsSettings
 } from './components';
 
 // Import Service & Types
@@ -224,7 +225,9 @@ class BrainDriveChatWithDocs extends React.Component<ChatCollectionsPluginProps,
                                 selectedCollection={selectedCollection}
                             />
                         )}
-                        {/* ... ChatView and SettingsView remain ... */}
+                        {currentView === ViewType.SETTINGS && (
+                            <ChatCollectionsSettings services={services} />
+                        )}
                     </div>
                 </ContentOverlay>
             </div>
