@@ -57,6 +57,7 @@
   },
   "dependencies": {
     "@microsoft/fetch-event-source": "^2.0.1",
+    "@tailwindcss/postcss": "^4.1.14",
     "axios": "^1.12.2",
     "lucide-react": "^0.525.0",
     "node-fetch": "^3.3.2",
@@ -65,7 +66,7 @@
     "react-markdown": "^10.1.0",
     "react-syntax-highlighter": "^15.6.6",
     "remark-gfm": "^4.0.1",
-    "tailwindcss": "^4.1.11"
+    "tailwindcss": "^4.1.14"
   },
   "peerDependencies": {
     "react": "^18.2.0",

@@ -5,6 +5,7 @@ import './BrainDriveChatWithDocs.css';
 import type { Services, TemplateTheme, SettingsService } from './types';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { AxiosRequestConfig } from 'axios';
+import { BRAINDRIVE_CORE_API, CHAT_SERVICE_API_BASE } from './constants';
 
 // Hot Module Replacement (HMR) setup - this must be at the top level
 if (module.hot) {
@@ -209,17 +210,36 @@ const defaultComponentSettings = {
 
 const componentSettings: SettingsService = {};
 
+const userId = "1a337d8bc08d4fddbcf7f1f79349f4da";
+
+const authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1NmU4YzhhZGE3YTI0MTQ5OWNkYmQ1MjYzNDc1NmMyMCIsImlhdCI6MTc2MDQyODgyNC40OTQ3OTEsImV4cCI6MTc2MDQ1NzYyNC40OTUzNTh9.zxGWPp61dFc66O5fc0-0KAamIVJRVIm3jwVOg3z3dTw";
+
+
+function makeRequestUrl(endpoint: string) {
+  if (endpoint.startsWith(CHAT_SERVICE_API_BASE)) {
+    return endpoint;
+  } else if (endpoint.startsWith(BRAINDRIVE_CORE_API)) {
+    return `${endpoint}?user_id=${userId}`;
+  } else {
+    return `${BRAINDRIVE_CORE_API}${endpoint}?user_id=${userId}`;
+  }
+}
+
 const componentServices: Services = {
   api: {
-    get: async (url) => {
+    get: async (url, options = {}) => {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 5000);
       try {
-        const response = await fetch(url, {
+        const apiEndpoint = makeRequestUrl(url);
+        const response = await fetch(apiEndpoint, {
           method: 'GET',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            ...(options.headers || {}),
+            'Authorization': `Bearer ${authToken}`,
           },
+          ...options
         });
         
         clearTimeout(timeoutId);
@@ -258,9 +278,11 @@ const componentServices: Services = {
     },
     post: async (url, data) => {
       console.log(`Making API POST request to: ${url}`);
-      const response = await fetch(url, {
+      const apiEndpoint = makeRequestUrl(url);
+      const response = await fetch(apiEndpoint, {
         method: 'POST',
         headers: {
+          'Authorization': `Bearer ${authToken}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
@@ -296,7 +318,7 @@ const componentServices: Services = {
       onChunk?: (chunk: string) => void,
       config?: AxiosRequestConfig
     ): Promise<T> => {
-      // const url = `${API_BASE}${path}`;
+      const apiEndpoint = makeRequestUrl(url);
       const token = localStorage.getItem('accessToken');
       let accumulated = '';
     
@@ -306,12 +328,13 @@ const componentServices: Services = {
       // console.log('Payload sent:', payload);
     
       return new Promise<T>((resolve, reject) => {
-        fetchEventSource(url, {
+        fetchEventSource(apiEndpoint, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'text/event-stream',
-            ...(token ? { Authorization: `Bearer ${token}` } : {})
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            'Authorization': `Bearer ${authToken}`
           },
           body: JSON.stringify(payload),
           openWhenHidden: true,

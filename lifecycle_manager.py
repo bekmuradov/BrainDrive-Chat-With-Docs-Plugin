@@ -125,7 +125,7 @@ class BrainDriveChatWithDocsLifecycleManager(BaseLifecycleManager):
             "permissions": ["storage.read", "storage.write", "api.access"]
         }
 
-        self.settings_definition_id = 'chat_with_document_processor_settings'
+        self.settings_definition_id = 'braindrive_chat_with_documents_settings'
 
         self.required_services_runtime = [
             {
@@ -1029,7 +1029,7 @@ class BrainDriveChatWithDocsLifecycleManager(BaseLifecycleManager):
         """Remove settings instance for user"""
         try:
             # Use the same unique ID for the settings definition
-            definition_id = 'chat_with_document_processor_settings'
+            definition_id = self.settings_definition_id
 
             # Remove settings instance
             settings_instance = await db.execute(

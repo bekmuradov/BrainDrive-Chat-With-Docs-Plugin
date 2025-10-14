@@ -143,7 +143,6 @@ class BrainDriveChatWithDocs extends React.Component<ChatCollectionsPluginProps,
                                         <ArrowLeft className="h-5 w-5 mr-2" /> Back
                                     </button>
                                 )}
-                                {/* ... Header Title Logic ... */}
                             </div>
                             
                             <div className="flex items-center space-x-3">
