@@ -47,6 +47,18 @@ export interface Document {
   chunk_count: number;
 }
 
+export interface DocumentChunk {
+    id: string;
+    document_id: string;
+    collection_id: string;
+    content: string;
+    chunk_index: number;
+    chunk_type: string;
+    parent_chunk_id?: string;
+    metadata: object;
+    embedding_vector?: number[];
+}
+
 export enum ChatSessionStatus {
   ACTIVE = 'active',
   INACTIVE = 'inactive',

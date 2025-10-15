@@ -1,5 +1,5 @@
 import React from 'react';
-import { ModelInfo, ConversationInfo, PersonaInfo } from '../../types';
+import { ModelInfo, ConversationInfo, PersonaInfo, ApiService } from '../../types';
 import { Collection } from '../chatViewTypes';
 import { formatRelativeTimeByTimestamp } from '../../utils';
 import { ComposeIcon, ThreeDotsIcon, EditIcon, DeleteIcon } from '../icons';
@@ -7,7 +7,14 @@ import SearchableDropdown, {
   DropdownOption
 } from './SearchableDropdown';
 
+import { DocumentManagerModal } from '../../document-view/DocumentManagerModal';
+import { DocumentService } from '../../document-view/DocumentService';
+import { DataRepository } from '../../braindrive-plugin/DataRepository';
+
 interface ChatHeaderProps {
+  // API Service
+  apiService?: ApiService;
+  dataRepository: DataRepository;
   // Model selection props
   models: ModelInfo[];
   selectedModel: ModelInfo | null;
@@ -44,11 +51,15 @@ interface ChatHeaderState {
 }
 
 class ChatHeader extends React.Component<ChatHeaderProps, ChatHeaderState> {
+  private documentService: DocumentService;
+
   private menuButtonRef: HTMLButtonElement | null = null;
   private menuRef: HTMLDivElement | null = null;
   constructor(props: ChatHeaderProps) {
     super(props);
     this.state = { isMenuOpen: false };
+
+    this.documentService = new DocumentService(props.apiService);
   }
 
   componentDidMount(): void {
@@ -193,6 +204,15 @@ class ChatHeader extends React.Component<ChatHeaderProps, ChatHeaderState> {
               />
             </div>
           )}
+
+          <DocumentManagerModal
+            apiService={this.props.apiService}
+            dataRepository={this.props.dataRepository}
+            collectionId={selectedCollection.id}
+            onDocumentListChange={() => console.log("document changed")}
+            documents={[]}
+            chatSessions={[]}
+          />
 
           {/* Middle Section - Persona Selection */}
           {showPersonaSelection && (

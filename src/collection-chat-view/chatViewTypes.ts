@@ -6,10 +6,12 @@
 export type { Collection, ChatSession, ChatMessage } from '../braindrive-plugin/pluginTypes';
 import type { ChatMessage, Collection } from '../braindrive-plugin/pluginTypes';
 import type { Services } from '../types';
+import type { DataRepository } from '../braindrive-plugin/DataRepository';
 
 // Component props
 export interface CollectionChatProps {
   moduleId?: string;
+  dataRepository: DataRepository;
   selectedCollection: Collection;
   services: Services;
   initialGreeting?: string;

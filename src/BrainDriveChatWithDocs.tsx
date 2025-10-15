@@ -214,6 +214,7 @@ class BrainDriveChatWithDocs extends React.Component<ChatCollectionsPluginProps,
                         {currentView === ViewType.DOCUMENTS && selectedCollection && (
                             <CollectionChatViewShell
                                 services={services}
+                                dataRepository={this.pluginService.getDataRepository()}
                                 selectedCollection={selectedCollection}
                             />
                         )}

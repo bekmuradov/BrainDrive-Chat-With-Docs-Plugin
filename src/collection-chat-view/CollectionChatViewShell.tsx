@@ -2297,6 +2297,18 @@ export class CollectionChatViewShell extends React.Component<CollectionChatProps
       if (this.state.documentContext) {
         enhancedPrompt = `${this.state.documentContext}\n\nUser Question: ${prompt}`;
       }
+
+      // ground to collection - relevance context search
+      const relevantResults = await this.props.dataRepository.getRelevantContent(
+        prompt,
+        this.props.selectedCollection.id
+      );
+
+      let relevantContext = '';
+      if (relevantResults) {
+        relevantContext = relevantResults.map((result) => result.content).join(", ");
+        enhancedPrompt += `Relevant context: ${relevantContext}\n\nUser question: ${prompt}`
+      }
       
       // Create placeholder for AI response
       const placeholderId = generateId('ai');
@@ -2458,7 +2470,7 @@ export class CollectionChatViewShell extends React.Component<CollectionChatProps
       isSearching
     } = this.state;
     
-    const { promptQuestion, selectedCollection } = this.props;
+    const { promptQuestion, selectedCollection, services } = this.props;
     const themeClass = this.state.currentTheme === 'dark' ? 'dark-theme' : '';
     
     return (
@@ -2469,6 +2481,8 @@ export class CollectionChatViewShell extends React.Component<CollectionChatProps
         <div className="chat-paper">
           {/* Chat header with controls and history dropdown */}
           <ChatHeader
+            apiService={services.api}
+            dataRepository={this.props.dataRepository}
             models={models}
             selectedModel={selectedModel}
             isLoadingModels={isLoadingModels}

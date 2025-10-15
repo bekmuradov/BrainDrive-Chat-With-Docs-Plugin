@@ -1,5 +1,5 @@
 import type { Services } from '../types';
-import type { Collection, Document, ChatSession, ChatMessage } from './pluginTypes';
+import type { Collection, Document, ChatSession, ChatMessage, DocumentChunk } from './pluginTypes';
 
 // Utility for making API calls, handling the switch between props.services.api and raw fetch
 const apiCall = async (servicesApi: Services['api'], baseUrl: string, endpoint: string, method: 'GET' | 'POST' | 'PUT' | 'DELETE', data?: any) => {
@@ -54,6 +54,17 @@ export class DataRepository {
 
     public getChatMessages = async (sessionId: string): Promise<ChatMessage[]> => {
         return apiCall(this.apiService, this.apiBaseUrl, `/chat/messages?session_id=${sessionId}`, 'GET');
+    }
+
+    public getRelevantContent = async (query: string, collectionId: string): Promise<DocumentChunk[]> => {
+        const searchData = {
+            query_text: query,
+            collection_id: collectionId,
+            top_k: 0.8,
+            use_hybrid: false,
+            filters: {}
+        };
+        return apiCall(this.apiService, this.apiBaseUrl, '/search', 'POST', searchData)
     }
     
     // Add other methods like createCollection, uploadDocument, createChatSession here...
