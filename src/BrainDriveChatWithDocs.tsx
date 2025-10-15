@@ -176,13 +176,13 @@ class BrainDriveChatWithDocs extends React.Component<ChatCollectionsPluginProps,
                                 {selectedCollection && areServicesReady && (
                                     <div className="flex space-x-2">
                                         {/* ... View Switch Buttons ... */}
-                                        <CreateSessionForm
+                                        {/* <CreateSessionForm
                                             collectionId={selectedCollection.id}
                                             onSessionCreated={this.handleChatSessionSelect}
                                             onError={this.pluginService.setError} // Direct Service call
                                             buttonText="New Chat"
                                             placeholder="Session name"
-                                        />
+                                        /> */}
                                     </div>
                                 )}
                             </div>
