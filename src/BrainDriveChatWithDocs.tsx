@@ -5,6 +5,7 @@ import {
 	Loader2,
 	ArrowLeft,
 	Settings,
+    AlertCircle
 } from 'lucide-react';
 import { CollectionViewShell } from './collection-view/CollectionViewShell';
 import { CollectionChatViewShell } from './collection-chat-view/CollectionChatViewShell';
@@ -54,7 +55,7 @@ class BrainDriveChatWithDocs extends React.Component<ChatCollectionsPluginProps,
             loading: false,
             error: null,
             currentTheme: 'light',
-            isInitializing: false,
+            isInitializing: true,
             serviceStatuses: PLUGIN_SERVICE_RUNTIMES.map(service => ({
                 name: service.name,
                 status: 'checking' as const,
@@ -80,10 +81,21 @@ class BrainDriveChatWithDocs extends React.Component<ChatCollectionsPluginProps,
     // LIFECYCLE (Thin Controller)
     // ===================================
     async componentDidMount() {
-        await this.pluginService.initializePlugin();
+        this.pluginService.setMounted(true);
+        try {
+            await this.pluginService.initializePlugin();
+            this.setState({ isInitializing: false });
+        } catch (error) {
+            console.error('ChatCollectionsPlugin: Failed to initialize:', error);
+            this.setState({ 
+                error: 'Failed to initialize plugin',
+                isInitializing: false 
+            });
+        }
     }
 
     componentWillUnmount() {
+        this.pluginService.setMounted(false);
         this.pluginService.cleanup();
     }
 
@@ -128,7 +140,7 @@ class BrainDriveChatWithDocs extends React.Component<ChatCollectionsPluginProps,
         } = this.state;
         const { services } = this.props;
         // Get service status directly from the logic layer's current state
-        const isServicesReady = this.pluginService.areServicesReady(); 
+        const areServicesReady = this.pluginService.areServicesReady(); 
 
         return (
             <div className="chat-collections-plugin-content">
@@ -139,10 +151,11 @@ class BrainDriveChatWithDocs extends React.Component<ChatCollectionsPluginProps,
                             <div className="flex items-center space-x-4">
                                 {/* Uses delegated handlers */}
                                 {currentView !== ViewType.COLLECTIONS && (
-                                    <button onClick={this.handleBack} disabled={!isServicesReady} /* ... */>
+                                    <button onClick={this.handleBack} disabled={!areServicesReady} /* ... */>
                                         <ArrowLeft className="h-5 w-5 mr-2" /> Back
                                     </button>
                                 )}
+                                <p className='text-black text-xl'>TESTING HEADER</p>
                             </div>
                             
                             <div className="flex items-center space-x-3">
@@ -160,7 +173,7 @@ class BrainDriveChatWithDocs extends React.Component<ChatCollectionsPluginProps,
                                     </button>
                                 )}
                                 
-                                {selectedCollection && isServicesReady && (
+                                {selectedCollection && areServicesReady && (
                                     <div className="flex space-x-2">
                                         {/* ... View Switch Buttons ... */}
                                         <CreateSessionForm
@@ -187,16 +200,10 @@ class BrainDriveChatWithDocs extends React.Component<ChatCollectionsPluginProps,
                 )}
 
                 {/* Main Content with Overlay */}
-                <ContentOverlay isServicesReady={isServicesReady}>
+                <ContentOverlay areServicesReady={areServicesReady}>
                     <div className="max-w-7xl mx-auto px-4 py-6">
                         {currentView === ViewType.COLLECTIONS && (
-                            // <CollectionsView
-                            //     collections={collections}
-                            //     onCollectionSelect={this.handleCollectionSelect}
-                            //     onCollectionCreate={this.pluginService.loadCollections} // Direct Service call
-                            //     setError={this.pluginService.setError}
-                            // />
-                            <CollectionViewShell // <-- NEW COMPONENT
+                            <CollectionViewShell
                                 collections={collections}
                                 onCollectionSelect={this.handleCollectionSelect}
                                 onCollectionCreate={this.pluginService.loadCollections} // Pass service method as handler
@@ -205,20 +212,6 @@ class BrainDriveChatWithDocs extends React.Component<ChatCollectionsPluginProps,
                             />
                         )}
                         {currentView === ViewType.DOCUMENTS && selectedCollection && (
-                            // <DocumentsView
-                            //     collection={selectedCollection}
-                            //     selectedSession={selectedChatSession}
-                            //     documents={documents}
-                            //     chatSessions={chatSessions}
-                            //     apiService={services.api}
-                            //     // Handlers call service methods directly
-                            //     onDocumentUpload={() => this.pluginService.loadDocuments(selectedCollection.id)}
-                            //     onDocumentDelete={() => this.pluginService.loadDocuments(selectedCollection.id)}
-                            //     onChatSessionCreate={this.pluginService.loadChatSessions}
-                            //     onChatSessionSelect={this.handleChatSessionSelect}
-                            //     onChatSessionDelete={this.pluginService.loadChatSessions}
-                            //     setError={this.pluginService.setError}
-                            // />
                             <CollectionChatViewShell
                                 services={services}
                                 selectedCollection={selectedCollection}
@@ -233,12 +226,38 @@ class BrainDriveChatWithDocs extends React.Component<ChatCollectionsPluginProps,
         );
     }
 
+    /**
+   * Render error state
+   */
+    private renderError(): JSX.Element {
+        return (
+            <div className="plugin-template-error">
+                <div className="error-icon">
+                    <AlertCircle className="h-8 w-8 text-red-500" />
+                </div>
+                <p>{this.state.error}</p>
+                <button
+                    onClick={() => this.setState({ error: null })}
+                    className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                >
+                    Retry
+                </button>
+            </div>
+        );
+    }
+
     render(): JSX.Element {
-        const { currentTheme, isInitializing } = this.state;
+        const { currentTheme, isInitializing, error } = this.state;
         
         return (
             <div className={`plugin-template chat-collections-plugin ${currentTheme === 'dark' ? 'dark-theme' : ''}`}>
-                {this.renderContent()}
+                {isInitializing ? (
+                    this.renderLoading()
+                ) : error && !this.state.collections.length ? (
+                    this.renderError()
+                ) : (
+                    this.renderContent()
+                )}
             </div>
         );
     }

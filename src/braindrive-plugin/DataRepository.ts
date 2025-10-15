@@ -40,19 +40,19 @@ export class DataRepository {
         this.apiBaseUrl = apiBaseUrl;
     }
 
-    public async getCollections(): Promise<Collection[]> {
+    public getCollections = (): Promise<Collection[]> => {
         return apiCall(this.apiService, this.apiBaseUrl, '/collections/', 'GET');
     }
 
-    public async getDocuments(collectionId: string): Promise<Document[]> {
+    public getDocuments = async (collectionId: string): Promise<Document[]> => {
         return apiCall(this.apiService, this.apiBaseUrl, `/documents/?collection_id=${collectionId}`, 'GET');
     }
 
-    public async getChatSessions(): Promise<ChatSession[]> {
+    public getChatSessions = async (): Promise<ChatSession[]> => {
         return apiCall(this.apiService, this.apiBaseUrl, '/chat/sessions', 'GET');
     }
 
-    public async getChatMessages(sessionId: string): Promise<ChatMessage[]> {
+    public getChatMessages = async (sessionId: string): Promise<ChatMessage[]> => {
         return apiCall(this.apiService, this.apiBaseUrl, `/chat/messages?session_id=${sessionId}`, 'GET');
     }
     

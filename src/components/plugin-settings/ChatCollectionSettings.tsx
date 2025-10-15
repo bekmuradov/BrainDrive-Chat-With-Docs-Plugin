@@ -352,7 +352,7 @@ export class ChatCollectionsSettings extends React.Component<ChatCollectionsSett
         const { services } = this.props;
 
         try {
-            if (services.api?.post) {
+            if (services.api?.put) {
                 // First, find the existing instance to update it instead of creating a new one
                 let existingInstanceId = null;
                 
@@ -385,7 +385,7 @@ export class ChatCollectionsSettings extends React.Component<ChatCollectionsSett
                 if (existingInstanceId) {
                     payload.id = existingInstanceId;
                 }
-                await services.api.post('/api/v1/settings/instances', payload);
+                await services.api.post(`${BRAINDRIVE_CORE_API}/api/v1/settings/instances`, payload);
             } else if (services.settings?.setSetting) {
                 await services.settings.setSetting(CHAT_SETTINGS.DEFINITION_ID, this.state.settings, { userId: 'current' });
             } else {

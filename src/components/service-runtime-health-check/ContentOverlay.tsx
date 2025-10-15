@@ -5,12 +5,12 @@ import { Loader2 } from 'lucide-react';
  * Shows disabled overlay when services aren't ready
  */
 interface ContentOverlayProps {
-  isServicesReady: boolean;
+  areServicesReady: boolean;
   children: React.ReactNode;
 }
 
-export const ContentOverlay: React.FC<ContentOverlayProps> = ({ isServicesReady, children }) => {
-  if (isServicesReady) {
+export const ContentOverlay: React.FC<ContentOverlayProps> = ({ areServicesReady, children }) => {
+  if (areServicesReady) {
     return <>{children}</>;
   }
   

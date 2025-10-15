@@ -12,7 +12,7 @@ export class HealthCheckService {
         this.requiredRuntimes = requiredRuntimes;
     }
 
-    private async checkSingleService(service: RequiredService): Promise<ServiceRuntimeStatus> {
+    private checkSingleService = async (service: RequiredService): Promise<ServiceRuntimeStatus> => {
         try {
             const response = await fetch(service.healthcheck_url, {
                 method: 'GET',
@@ -29,7 +29,7 @@ export class HealthCheckService {
         }
     }
 
-    public async checkAllServices(): Promise<ServiceRuntimeStatus[]> {
+    public checkAllServices = async (): Promise<ServiceRuntimeStatus[]> => {
         return Promise.all(
             this.requiredRuntimes.map(service => this.checkSingleService(service))
         );

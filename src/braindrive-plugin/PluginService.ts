@@ -30,7 +30,7 @@ export class PluginService {
     private pageContextUnsubscribe: (() => void) | null = null;
     private dataRefreshInterval: NodeJS.Timeout | null = null;
     private serviceCheckInterval: NodeJS.Timeout | null = null;
-    private isMounted: boolean = true; // Use a flag, similar to _isMounted
+    private isMounted: boolean = false; // Use a flag, similar to _isMounted
 
     constructor(initialState: PluginState, services: Services, config: ChatCollectionsConfig | undefined, updateComponentState: PluginStateUpdater) {
         this.state = initialState;
@@ -46,7 +46,7 @@ export class PluginService {
 
     // --- Private State Management ---
 
-    private updateState(newState: Partial<PluginState>): void {
+    private updateState = (newState: Partial<PluginState>): void => {
         this.state = { ...this.state, ...newState } as PluginState;
         // Only update React if the component is mounted (simulating the previous _isMounted check)
         if (this.isMounted) {
@@ -56,7 +56,7 @@ export class PluginService {
     
     // --- Public Lifecycle Methods (Called by React Component) ---
 
-    public async initializePlugin(): Promise<void> {
+    public initializePlugin = async(): Promise<void> => {
         try {
             this.setupExternalListeners();
             await this.checkAllServices(); // Checks health
@@ -68,14 +68,23 @@ export class PluginService {
             this.updateState({ error: 'Failed to initialize plugin', isInitializing: false });
         }
     }
+
+    public setMounted(mounted: boolean): void {
+        this.isMounted = mounted;
+        // On mount, if services are ready, try loading data again just in case the initial load was missed
+        if (mounted && this.areServicesReady()) {
+            this.loadInitialData();
+            this.setupDataRefreshIfServicesReady();
+        }
+    }
     
-    public cleanup(): void {
+    public cleanup = (): void => {
         this.isMounted = false; // Prevent setState calls after unmount
         this.cleanupExternalListeners();
         this.cleanupIntervals();
     }
     
-    public handleComponentUpdate(prevState: PluginState): void {
+    public handleComponentUpdate = (prevState: PluginState): void => {
         // Logic previously in componentDidUpdate moved here
         const { selectedCollection, selectedChatSession, serviceStatuses } = this.state;
         const wasServicesReady = this.areServicesReady(prevState.serviceStatuses);
@@ -101,12 +110,12 @@ export class PluginService {
     
     // --- Infrastructure & Cleanup Management ---
 
-    public areServicesReady(statuses?: ServiceRuntimeStatus[]): boolean {
+    public areServicesReady = (statuses?: ServiceRuntimeStatus[]): boolean => {
         const statusesToCheck = statuses || this.state.serviceStatuses;
-        return statusesToCheck.every(s => s.status === 'ready');
+        return statusesToCheck.every((s) => s.status === 'ready');
     }
 
-    private setupExternalListeners(): void {
+    private setupExternalListeners = (): void => {
         if (this.services.theme) {
             this.updateState({ currentTheme: this.services.theme.getCurrentTheme() });
             this.themeChangeListener = (theme: TemplateTheme) => this.updateState({ currentTheme: theme });
@@ -119,7 +128,7 @@ export class PluginService {
         }
     }
 
-    private cleanupExternalListeners(): void {
+    private cleanupExternalListeners = (): void => {
         if (this.services.theme && this.themeChangeListener) {
             this.services.theme.removeThemeChangeListener(this.themeChangeListener);
         }
@@ -128,26 +137,27 @@ export class PluginService {
         }
     }
 
-    private cleanupIntervals(): void {
+    private cleanupIntervals = (): void => {
         if (this.dataRefreshInterval) clearInterval(this.dataRefreshInterval);
         if (this.serviceCheckInterval) clearInterval(this.serviceCheckInterval);
     }
 
     // --- Data Loading & Refresh Logic ---
 
-    public async checkAllServices(): Promise<void> {
+    public checkAllServices = async (): Promise<void> => {
         const statusChecks = await this.healthCheckService.checkAllServices();
         this.updateState({ serviceStatuses: statusChecks });
     }
 
-    private setupPeriodicHealthCheck(): void {
+    private setupPeriodicHealthCheck = (): void => {
         this.serviceCheckInterval = setInterval(() => this.checkAllServices(), 30000);
     }
     
-    private async loadInitialData(): Promise<void> {
+    private loadInitialData = async (): Promise<void> => {
         if (!this.areServicesReady()) return;
         this.updateState({ loading: true, error: null });
         try {
+            console.log("Loading collections.....");
             await this.loadCollections();
         } catch (error) {
             console.error('PluginService: Failed to load initial data:', error);
@@ -157,16 +167,17 @@ export class PluginService {
         }
     }
 
-    public async loadCollections(): Promise<void> {
+    public loadCollections = async (): Promise<void> => {
         try {
             const collections = await this.dataRepository.getCollections();
+            console.log("loaded collections: ", collections);
             this.updateState({ collections, error: null });
         } catch (err: any) {
             this.updateState({ error: `Failed to load collections: ${err.message}` });
         }
     }
 
-    public async loadDocuments(collectionId: string): Promise<void> {
+    public loadDocuments = async (collectionId: string): Promise<void> => {
         try {
             const documents = await this.dataRepository.getDocuments(collectionId);
             this.updateState({ documents, error: null });
@@ -175,7 +186,7 @@ export class PluginService {
         }
     }
 
-    public async loadChatSessions(): Promise<void> {
+    public loadChatSessions = async (): Promise<void> => {
         try {
             const allSessions = await this.dataRepository.getChatSessions();
             const filtered = allSessions.filter(
@@ -187,7 +198,7 @@ export class PluginService {
         }
     }
 
-    public async loadChatMessages(sessionId: string): Promise<void> {
+    public loadChatMessages = async (sessionId: string): Promise<void> => {
         try {
             const messages = await this.dataRepository.getChatMessages(sessionId);
             this.updateState({ chatMessages: messages, error: null });
@@ -196,7 +207,7 @@ export class PluginService {
         }
     }
 
-    private setupDataRefreshIfServicesReady(): void {
+    private setupDataRefreshIfServicesReady = (): void => {
         this.cleanupIntervals(); // Clear existing
         const refreshInterval = this.config?.refreshInterval;
         
@@ -208,7 +219,7 @@ export class PluginService {
         }
     }
 
-    private async refreshData(): Promise<void> {
+    private refreshData = async (): Promise<void> => {
         if (!this.areServicesReady() || this.state.loading) return;
         
         try {
@@ -271,7 +282,7 @@ export class PluginService {
     
     public getCurrentState = (): PluginState => this.state;
 
-    public getDataRepository(): DataRepository {
+    public getDataRepository = (): DataRepository => {
         return this.dataRepository;
     }
 }
