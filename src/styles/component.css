@@ -2,58 +2,48 @@
 
 /* Redesigned Chat Header Styles */
 .chat-header-redesigned {
-    display: grid;
-    /* Define grid columns: 1fr (Model) | 1fr (Docs) | 1fr (Persona) | 1.5fr (History) | auto (Actions) */
-    grid-template-columns: 1fr auto auto 1.5fr auto;
-    align-items: center; /* Changed from flex-start for better vertical alignment */
-    border-bottom: 1px solid var(--border-color);
-    background-color: var(--paper-bg);
-    flex-shrink: 0;
-    gap: 1.5rem;
-    min-height: 64px;
+  display: grid;
+  /* Allow Model and Persona to sit side-by-side before the flexible spacer */
+  grid-template-columns: auto auto 1fr auto;
+  align-items: flex-start;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--paper-bg);
+  flex-shrink: 0;
+  gap: 1.5rem;
+  min-height: 64px;
 }
 
-/* Remove min/max-width overrides on header sections to allow the grid to control sizing */
 .header-model-section {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    justify-self: start;
-}
-
-/* Documents section is now a grid item and should take 1fr */
-.header-docs-section {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    justify-self: start;
-    min-width: 0; 
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  justify-self: start;
+  min-width: 340px;
 }
 
 .header-persona-section {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    justify-self: start;
-    min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  justify-self: start;
 }
 
 .header-history-section {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    justify-self: start; /* Changed from center to align with other sections */
-    min-width: 0; 
-    /* Max width is now controlled by the 1.5fr size */
-    max-width: none; 
-    width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  justify-self: center;
+  min-width: 0;
+  max-width: 500px;
+  width: 100%;
 }
 
 .header-actions-section {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-self: end;
 }
 
 .header-new-chat-button {
@@ -115,29 +105,31 @@
   box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.1);
 }
 
-/* Cleanup specific width overrides on dropdowns to follow new container size */
 .header-model-section .searchable-dropdown {
-    flex: 1 1 0%; /* Allow it to fill the entire 1fr column */
-    min-width: 0;
+  flex: 1 0 auto;
+  min-width: 320px;
 }
 
 .header-model-section .searchable-dropdown-trigger,
 .header-model-section .header-select {
-    min-width: 0; 
-    max-width: 100%; 
-    flex: 1 1 auto;
+  min-width: 320px;
+  max-width: 420px;
+  flex-shrink: 0;
 }
 
-/* Remove Persona section width overrides */
+.header-model-section .searchable-dropdown-menu {
+  min-width: 340px;
+  width: max-content;
+}
+
 .header-persona-section .header-select {
-    min-width: 0;
-    max-width: 100%;
-    flex: 1 1 auto;
+  min-width: 140px;
+  max-width: 160px;
 }
 
 .header-select-history {
-    flex: 1 1 0%;
-    min-width: 0;
+  flex: 1;
+  min-width: 200px;
 }
 
 /* Searchable dropdown */

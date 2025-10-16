@@ -12,6 +12,11 @@ import { CHAT_SERVICE_API_BASE } from '../constants';
 // Use the ApiService defined in types.ts
 type ApiService = DocumentManagerModalProps['apiService'];
 
+const userId = "f03562d0a69f4e6bb561959824b889f9";
+
+const authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmMDM1NjJkMGE2OWY0ZTZiYjU2MTk1OTgyNGI4ODlmOSIsImlhdCI6MTc2MDU4NzE3MC41NjAyNjksImV4cCI6MTc2MDYxNTk3MC41NjEzOTd9.8GxV7zNUMUGNzKJNylEDnSCePhrGwfFNbY_sk8R-JXY";
+
+
 export class DocumentService implements IDocumentService {
     private state: DocumentServiceState;
     private listeners: Set<(state: DocumentServiceState) => void> = new Set();
@@ -80,10 +85,21 @@ export class DocumentService implements IDocumentService {
 
         try {
             // Use injected apiService for POST
-            const uploadedDocument = await this.apiService?.post<Document>(
-                `${CHAT_SERVICE_API_BASE}/documents/`, 
-                formData
-            );
+            // const uploadedDocument = await this.apiService?.post<Document>(
+            //     `${CHAT_SERVICE_API_BASE}/documents/`, 
+            //     formData
+            // );
+
+            const response = await fetch(`${CHAT_SERVICE_API_BASE}/documents/`, {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (!response.ok) {
+                throw new Error(`Upload failed: ${response.statusText}`);
+            }
+
+            const uploadedDocument: Document = await response.json();
             
             if (uploadedDocument) {
                 showToast(`Successfully uploaded "${file.name}"`, 'success');

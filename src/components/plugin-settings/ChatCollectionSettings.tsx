@@ -777,8 +777,8 @@ export class ChatCollectionsSettings extends React.Component<ChatCollectionsSett
         return (
         <div className="max-w-4xl mx-auto p-6">
             <div className="mb-6">
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">
-                Document Processing Settings
+            <h1 className="text-xl font-bold text-gray-900 mb-2">
+                Plugin Service Runtime Settings
             </h1>
             <p className="text-gray-600">
                 Configure your LLM providers, document processing, and retrieval settings

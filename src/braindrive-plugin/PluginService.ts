@@ -11,9 +11,10 @@ import {
 import { DataRepository } from './DataRepository';
 import { HealthCheckService } from './HealthCheckService';
 import { CHAT_SERVICE_API_BASE, PLUGIN_SERVICE_RUNTIMES } from '../constants';
+import type { IPluginService } from './IPluginService';
 
 
-export class PluginService {
+export class PluginService implements IPluginService {
     // Private properties for internal state and dependencies
     private state: PluginState;
     private updateComponentState: PluginStateUpdater;
@@ -245,7 +246,7 @@ export class PluginService {
             selectedCollection: collection,
             selectedChatSession: null,
             chatMessages: [],
-            currentView: ViewType.DOCUMENTS,
+            currentView: ViewType.CHAT,
         });
         // Data loading is handled by the handleComponentUpdate logic
     }
@@ -262,7 +263,7 @@ export class PluginService {
         let newState: Partial<PluginState> = {};
         
         if (currentView === ViewType.CHAT) {
-            newState = { currentView: ViewType.DOCUMENTS, selectedChatSession: null, chatMessages: [] };
+            newState = { currentView: ViewType.COLLECTIONS, selectedChatSession: null, chatMessages: [] };
         } else if (currentView === ViewType.DOCUMENTS) {
             newState = { currentView: ViewType.COLLECTIONS, selectedCollection: null, documents: [], chatSessions: [] };
         } else if (currentView === ViewType.SETTINGS) {

@@ -2289,14 +2289,6 @@ export class CollectionChatViewShell extends React.Component<CollectionChatProps
       
       // Create abort controller for streaming
       this.currentStreamingAbortController = new AbortController();
-      
-      // Perform web search if enabled
-      let enhancedPrompt = prompt;
-      
-      // Add document context if available (only for AI, not for chat history)
-      if (this.state.documentContext) {
-        enhancedPrompt = `${this.state.documentContext}\n\nUser Question: ${prompt}`;
-      }
 
       // ground to collection - relevance context search
       const relevantResults = await this.props.dataRepository.getRelevantContent(
@@ -2304,10 +2296,34 @@ export class CollectionChatViewShell extends React.Component<CollectionChatProps
         this.props.selectedCollection.id
       );
 
+      // Perform context search
+      let enhancedPrompt = prompt;
+
       let relevantContext = '';
       if (relevantResults) {
         relevantContext = relevantResults.map((result) => result.content).join(", ");
-        enhancedPrompt += `Relevant context: ${relevantContext}\n\nUser question: ${prompt}`
+        // enhancedPrompt += `Relevant context: ${relevantContext}\n\nUser question: ${prompt}`;
+        // Add document context if available (only for AI, not for chat history)
+        if (relevantContext) {
+          enhancedPrompt = `\n${relevantContext}\n\nUser Question: ${prompt}`;
+          // Add document context to state
+          this.setState({ documentContext: relevantContext }, () => {
+            // Add a message to show the documents were processed
+            const documentMessage: ChatMessage = {
+              id: generateId('documents'),
+              sender: 'ai',
+              content: '',
+              timestamp: new Date().toISOString(),
+              isDocumentContext: true,
+              documentData: {
+                results: [],
+                context: relevantContext,
+              }
+            };
+
+            this.addMessageToChat(documentMessage);
+          });
+        }
       }
       
       // Create placeholder for AI response
@@ -2475,9 +2491,6 @@ export class CollectionChatViewShell extends React.Component<CollectionChatProps
     
     return (
       <div className={`braindrive-chat-container ${themeClass}`}>
-        <div>
-          <h1>Chat with {selectedCollection.name}</h1>
-        </div>
         <div className="chat-paper">
           {/* Chat header with controls and history dropdown */}
           <ChatHeader
@@ -2510,7 +2523,7 @@ export class CollectionChatViewShell extends React.Component<CollectionChatProps
           ) : (
             <>
               {/* Chat history area */}
-              <div className="chat-history-container">
+              <div className="h-full max-h-96 overflow-y-auto">
                 <ChatHistory
                   messages={messages}
                   isLoading={isLoading}

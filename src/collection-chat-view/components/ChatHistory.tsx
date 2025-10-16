@@ -565,10 +565,10 @@ class ChatHistory extends React.Component<ChatHistoryProps, ChatHistoryState> {
     const { messages, isLoadingHistory, chatHistoryRef } = this.props;
 
     return (
-      <div className="chat-history-container">
+      <div className="relative flex-1 flex flex-col min-h-0 max-h-full overflow-hidden">
         <div 
           ref={chatHistoryRef}
-          className="chat-history"
+          className="flex-1 overflow-y-auto overflow-x-hidden px-4 pt-4 pb-24 flex flex-col space-y-4 min-h-0"
           onScroll={this.props.onScroll}
           onPointerDown={this.handlePointerDown}
           onWheel={this.handleWheel}

@@ -1,5 +1,6 @@
-import { TemplateTheme, Services } from "../types";
-import { DocumentProcessingResult } from "../services";
+import type { TemplateTheme, Services } from "../types";
+import type { DocumentProcessingResult } from "../services";
+import type { IPluginService } from "./IPluginService";
 
 export interface ServiceRuntimeStatus {
   name: string;
@@ -149,3 +150,11 @@ export interface ChatCollectionsPluginProps {
 // Type for the setState function passed from the React component
 export type PluginStateUpdater = (newState: Partial<ChatCollectionsPluginState>) => void;
 
+export interface PluginHeaderProps {
+    pluginService: IPluginService;
+    currentView: ViewType;
+    serviceStatuses: ServiceRuntimeStatus[];
+    showServiceDetails: boolean;
+    areServicesReady: boolean;
+    collectionName?: string;
+}

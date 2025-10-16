@@ -60,11 +60,13 @@ export class DataRepository {
         const searchData = {
             query_text: query,
             collection_id: collectionId,
-            top_k: 0.8,
-            use_hybrid: false,
-            filters: {}
+            top_k: 7,
+            use_hybrid: true,
+            filters: {
+                min_similarity: 0.8,
+            }
         };
-        return apiCall(this.apiService, this.apiBaseUrl, '/search', 'POST', searchData)
+        return apiCall(this.apiService, this.apiBaseUrl, '/search/', 'POST', searchData)
     }
     
     // Add other methods like createCollection, uploadDocument, createChatSession here...

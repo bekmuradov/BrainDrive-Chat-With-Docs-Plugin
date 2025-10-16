@@ -132,26 +132,22 @@ export class DocumentManagerModal extends React.Component<DocumentManagerModalIn
         } = this.state;
 
         return (
-            <div className="header-docs-section overflow-y-auto">
-                <div className="space-y-6 mb-8">
+            <div className="header-docs-section">
+                <div title="Project files">
                     {/* Project files button and sessions list */}
-                    <div className="space-y-4">
-                        <div className="flex space-x-2 items-center mb-6">
-                            <button
-                                onClick={this.toggleModal}
-                                className="bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg shadow-sm flex items-center space-x-2"
-                            >
-                                <span className="font-medium">Project files</span>
-                                <span className="bg-blue-500 text-white rounded-full px-2 text-sm">
-                                    {documents.length}
-                                </span>
-                            </button>
-                        </div>
-                    </div>
+                    <button
+                        onClick={this.toggleModal}
+                        className="bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg shadow-sm flex items-center space-x-2"
+                    >
+                        <span className="font-medium">Project files</span>
+                        <span className="bg-blue-500 text-white rounded-full px-2 text-sm">
+                            {documents.length}
+                        </span>
+                    </button>
 
                     {/* Documents modal */}
                     {showModal && (
-                        <div className="fixed inset-0 bg-[rgba(115, 112, 112, 0.70)] dark:bg-[rgba(37, 36, 69, 0.7)] z-40 flex items-center justify-center">
+                        <div className="fixed inset-0 bg-[rgba(115, 112, 112, 0.70)] dark:bg-[rgba(37, 36, 69, 0.7)] z-40 flex items-center justify-center backdrop-blur-sm bg-white/30">
                             <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl max-w-4xl w-full mx-4 relative z-50">
                                 <div className="flex justify-between items-center border-b px-6 py-4">
                                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Project Files</h3>

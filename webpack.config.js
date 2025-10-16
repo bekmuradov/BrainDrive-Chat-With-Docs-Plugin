@@ -8,7 +8,7 @@ module.exports = {
   entry: "./src/index",
   output: {
     path: path.resolve(__dirname, 'dist'),
-    // path: path.resolve(__dirname, 'C:\\Users\\beck\\Documents\\GitHub\\brain_drive\\BrainDrive\\backend\\plugins\\shared\\BrainDriveChatWithDocs\\v1.0.3\\dist'),
+    // path: path.resolve(__dirname, 'C:\\Users\\beck\\Documents\\GitHub\\brain_drive\\BrainDrive\\backend\\plugins\\shared\\BrainDriveChatWithDocs\\vv1.1.0\\dist'),
     publicPath: "auto",
     clean: true,
     library: {
@@ -30,7 +30,8 @@ module.exports = {
         test: /\.css$/,
         use: [
           'style-loader',
-          'css-loader'
+          'css-loader',
+          'postcss-loader'
         ]
       }
     ],
