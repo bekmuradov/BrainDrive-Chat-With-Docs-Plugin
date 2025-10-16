@@ -74,7 +74,6 @@ button {
   background-color: var(--plugin-bg-color);
   color: var(--plugin-text-color);
   border-radius: 8px;
-  padding: 20px;
   margin: 10px 0;
   box-shadow: var(--plugin-card-shadow);
   transition: all 0.3s ease;
